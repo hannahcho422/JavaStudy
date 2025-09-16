@@ -1,0 +1,7 @@
+.DS_Store
+# Java
+*.class
+/out/
+/build/
+/target/
+*.log
