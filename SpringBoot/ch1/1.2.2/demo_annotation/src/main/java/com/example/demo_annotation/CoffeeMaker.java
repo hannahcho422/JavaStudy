@@ -9,7 +9,7 @@ import jakarta.annotation.PostConstruct;
 public class CoffeeMaker {
 
     @Autowired
-    @Qualifier("dripCoffeeMachine")
+    @Qualifier("espressoMachine")
     // 외부에서 CoffeeMachine 구현체를 주입받음
     private CoffeeMachine coffeeMachine;
 

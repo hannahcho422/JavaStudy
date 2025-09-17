@@ -1,8 +1,10 @@
 package com.example.demo_annotation;
 
 import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Primary;
 
-@Component
+@Component("espressoMachine")
+@Primary
 public class EspressoMachine implements CoffeeMachine {
     @Override
     public String brew() {
