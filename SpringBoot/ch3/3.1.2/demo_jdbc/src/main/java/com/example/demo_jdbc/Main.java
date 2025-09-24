@@ -17,7 +17,7 @@ public class Main {
         // 파라미터: 데이터베이스 url, 계정 정보
         try (
             Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/mydb?useSSL=false&useUnicode=true&characterEncoding=utf8",
+                "jdbc:mysql://localhost:3306/mydb?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8",
                 "myuser",
                 "Mypassw0rd!"
             );
