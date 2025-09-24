@@ -8,7 +8,7 @@ public class Members {
     private String email;
     private Integer age;
 
-    public Members(Long id, String nane, String email, Integer age) {
+    public Members(Long id, String name, String email, Integer age) {
         this.id = id;
         this.name = name;
         this.email = email;
