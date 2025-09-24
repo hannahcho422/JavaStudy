@@ -15,28 +15,27 @@ public class Main {
 
         // 데이터베이스에 연결
         // 파라미터: 데이터베이스 url, 계정 정보
-        Connection connection = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/mydb",
-            "myuser",
-            "Mypassw0rd!"
-        );
-
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM members");
-
-        // ResultSet을 통해 SQL 문이 실행되어 테이블 조회한 결과 전달
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        // 조회된 멤버 수만큼 반복문 통해 하나씩 컬럼 이름 사용해 컬럼 데이터 가져오기
-        while (resultSet.next()) {
-            var user = new Members(
-                resultSet.getLong("id"), 
-                resultSet.getString("name"), 
-                resultSet.getString("email"), 
-                resultSet.getInt("age")
+        try (
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/mydb?useSSL=false&useUnicode=true&characterEncoding=utf8",
+                "myuser",
+                "Mypassw0rd!"
+            );
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM members");
+            ResultSet resultSet = preparedStatement.executeQuery()
+        ) {
+            // 조회된 멤버 수만큼 반복문 통해 하나씩 컬럼 이름 사용해 컬럼 데이터 가져오기
+            while (resultSet.next()) {
+                var user = new Members(
+                    resultSet.getLong("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("email"),
+                    resultSet.getInt("age")
                 );
-            System.out.println(user);
+                System.out.println(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        // 데이터베이스 연결 종료
-        connection.close();
     }
 }
