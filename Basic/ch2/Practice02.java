@@ -1,4 +1,4 @@
-// 원의 넓이 구하기
+// 상수 & 변수: 원의 넓이 구하기
 public class Practice02 {
     public static void main(String[] args) {
         final double RADIUS = 25; 
