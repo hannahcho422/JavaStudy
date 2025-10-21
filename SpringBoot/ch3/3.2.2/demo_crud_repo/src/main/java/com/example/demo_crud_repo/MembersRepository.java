@@ -4,6 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import com.example.demo_crud_repo.Members;
 import java.util.List;
+import org.springframework.data.jdbc.repository.query.Query;     
+import org.springframework.data.repository.query.Param; 
 
 @Repository
 public interface MembersRepository extends CrudRepository<Members, Long> {
@@ -22,4 +24,11 @@ public interface MembersRepository extends CrudRepository<Members, Long> {
     List<Members> findByAgeGreaterThan(int age);
     List<Members> findByAgeLessThan(int age);
     List<Members> findByAgeBetween(int min, int max);
+
+    // @Query 
+    @Query("SELECT * FROM members WHERE age >= 13 AND age <= 19")
+    List<Members> findTeenAge();
+
+    @Query("SELECT * FROM members WHERE age >= :min AND age <= :max")
+    List<Members>findByAgeRange(int min, int max);
 }
