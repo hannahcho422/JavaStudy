@@ -14,13 +14,22 @@ public class SpringJdbcApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        // create
-        Members members = Members.builder().name("정혁").email("HyeokJung@gmail.com").age(10).build();
-        membersRepository.save(members);
+        // // create
+        // Members members = Members.builder().name("정혁").email("HyeokJung@gmail.com").age(10).build();
+        // membersRepository.save(members);
 
-        // update
-        members.setAge(11);
-        membersRepository.save(members);
+        // // update
+        // members.setAge(11);
+        // membersRepository.save(members);
+
+        // find all members
+        var all_members = membersRepository.findAll();
+        log.info("{}", all_members);
+
+        // find member by id
+        var member = membersRepository.findById(1L);
+        log.info("{}", member);
+      
     }
     
 }
