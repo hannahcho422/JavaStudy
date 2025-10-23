@@ -1,7 +1,88 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.example.demo_mybatis.mapper.MembersMapper">
+    <!-- id = 인터페이스의 메서드 이름과 동일한 값 -->
+    <!-- resultMap: 컬럼명과 필드명 매핑 -->
+    <resultMap id="membersResult" type="com.example.demo_mybatis.model.Members">
+        <id     property="id"    column="id"/>
+        <result property="name"  column="name"/>
+        <result property="email" column="email"/>
+        <result property="age"   column="age"/>
+    </resultMap>
+
+    <!-- 전체 조회 -->
+    <select id="selectAll" resultMap="membersResult">
+        SELECT * FROM members
+    </select>
+
+    <!-- id로 조회 -->
+    <select id="selectById" resultMap="membersResult" parameterType="long">
+        SELECT * FROM members WHERE id = #{id}
+    </select>
+
+    <!-- email로 조회 -->
+    <select id="selectByEmail" resultMap="membersResult" parameterType="string">
+        SELECT * FROM members WHERE email = #{email}
+    </select>
+
+    <!-- 이름 LIKE 검색 -->
+    <select id="selectByNameLike" resultMap="membersResult" parameterType="string">
+        SELECT * FROM members WHERE name LIKE CONCAT('%', #{name}, '%')
+    </select>
+
+    <!-- 정렬 조회 -->
+    <select id="selectAllOrderBy" resultMap="membersResult">
+        SELECT * FROM members
+        ORDER BY
+        <choose>
+            <when test="order == 'id' or order == 'name' or order == 'email' or order == 'age'">
+                ${order}
+            </when>
+            <otherwise>id</otherwise>
+        </choose>
+        <choose>
+            <when test="dir == 'desc' or dir == 'DESC'">DESC</when>
+            <otherwise>ASC</otherwise>
+        </choose>
+    </select>
+
+    <!-- 카운트 -->
+    <select id="selectAllCount" resultType="int">
+        SELECT COUNT(*) FROM members
+    </select>
+
+    <!-- INSERT -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="members.id" keyColumn="id">
+        INSERT INTO members (name, email, age)
+        VALUES (#{members.name}, #{members.email}, #{members.age})
+    </insert>
+
+    <!-- UPDATE -->
+    <update id="update">
+        UPDATE members
+        SET name=#{members.name},
+            email=#{members.email},
+            age=#{members.age}
+        WHERE id=#{members.id}
+    </update>
+
+    <!-- DELETE (객체 기준) -->
+    <delete id="delete">
+        DELETE FROM members WHERE id=#{members.id}
+    </delete>
+
+    <!-- DELETE BY ID -->
+    <delete id="deleteById">
+        DELETE FROM members WHERE id=#{id}
+    </delete>
+
+    <!-- DELETE ALL -->
+    <delete id="deleteAll">
+        DELETE FROM members
+    </delete>
 
 </mapper>
+
