@@ -1,6 +1,7 @@
 package com.example.demo_jpa.repository;
 
 import com.example.demo_jpa.model.Members;
+import com.example.demo_jpa.model.MemberStats; 
 
 import jakarta.transaction.Transactional;
 
@@ -8,6 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -103,4 +107,30 @@ public interface MembersRepository extends JpaRepository<Members, Long>{
     // 이름 사용해 회원 삭제
     @Transactional
     int deleteByName(String name);
+
+    @Query("SELECT m FROM Members m WHERE m.name = :name")
+    List<Members> findMember(@Param("name") String name);
+
+    @Query("SELECT m FROM Members m WHERE m.name = :name AND m.email = :email")
+    List<Members> findMember(@Param("name") String name, @Param("email") String email);
+
+    @Query("""
+            SELECT m.name, m.email, COUNT(a.id) as count
+            FROM Members m LEFT JOIN Article a ON a.member = m
+            GROUP BY m ORDER BY count DESC
+    """)
+    List<Object[]> getMemberStatsObject();
+
+    @Query("""
+            SELECT new com.example.demo_jpa.model.MemberStats(m.name, m.email, COUNT(a.id) as count)
+            FROM Members m LEFT JOIN Article a ON a.member = m
+            GROUP BY m ORDER BY count DESC
+    """)
+    List<MemberStats> getMemberStats();
+
+    @Modifying
+    @Query("UPDATE Members m SET m.age = :age")
+    @Transactional
+    int setMemberAge(Integer age);
+
 }
