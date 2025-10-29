@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Index;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,11 +16,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "members", indexes = {
+    @Index(name = "idx_name_age", columnList = "name, age"),
+    @Index(name = "idx_email", columnList = "email")
+})
 public class Members {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    // @Colum(name="display_name")
     private String name;
+    //@Column(name="primary_contact")
     private String email;
     private Integer age;
 }
