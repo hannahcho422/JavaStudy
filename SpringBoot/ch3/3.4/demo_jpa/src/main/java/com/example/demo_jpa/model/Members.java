@@ -6,10 +6,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Index;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.List;
 
 @Entity
 @Builder
@@ -29,4 +34,8 @@ public class Members {
     //@Column(name="primary_contact")
     private String email;
     private Integer age;
+    @ToString.Exclude
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private List<Article> articles;
 }
