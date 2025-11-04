@@ -27,5 +27,12 @@ public class MongoApplication implements ApplicationRunner {
                             .matchingAny("제주", "성산일출봉", "바다");
         List<Article> result = articleRepository.findByOrderByScoreDesc(criteria);
         result.forEach(article -> log.info("article={}", article));
+
+        // 게시글 작성자 이름 찾아서 이메일 주소 바꾸기, 이름과 이메일로 게시글 조회
+        int count = articleRepository.updateEmailByName("윤서준", "SeojunYoon@campus.co.kr");
+        log.info("count={}", count);
+
+        var result2 = articleRepository.findByAuthor("윤서준", "SeojunYoon@campus.co.kr");
+        result2.forEach(article -> log.info("article={}, article")); 
     }
 }
