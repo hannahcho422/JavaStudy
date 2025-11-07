@@ -16,3 +16,4 @@ public class Practice11{
         return sum;
     }
 }
+
