@@ -2,6 +2,7 @@ package com.example.demo_restful_api.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,5 +66,11 @@ public class MemberController {
             memberRepository.save(member);
         }
         return member;
+    }
+
+    // 회원 삭제하기
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        memberRepository.deleteById(id);
     }
 }
