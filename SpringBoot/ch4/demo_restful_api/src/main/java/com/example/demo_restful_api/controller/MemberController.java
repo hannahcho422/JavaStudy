@@ -1,5 +1,8 @@
 package com.example.demo_restful_api.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,5 +27,11 @@ public class MemberController {
         // .save()가 반환한 Member 객체 -> 자동 생성 기본 키 포함
         // 클라이어느에게 다시 반환
         return memberRepository.save(member);  
+    }
+
+    // 회원 조회
+    @GetMapping
+    public List<Member> getAll() {
+        return memberRepository.findAll();
     }
 }
