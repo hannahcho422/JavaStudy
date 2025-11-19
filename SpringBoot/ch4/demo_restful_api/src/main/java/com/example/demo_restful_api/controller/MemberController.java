@@ -3,6 +3,7 @@ package com.example.demo_restful_api.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -45,10 +46,24 @@ public class MemberController {
         return memberRepository.findById(id).orElse(null);
     }
 
-    // 회원 수정하기
+    // 회원 수정하기 (PUT)
     @PutMapping("/{id}")
     public Member put(@PathVariable("id") Long id, @RequestBody Member member) {
         member.setId(id);
         return memberRepository.save(member);
+    }
+
+    // 회원 수정하기 (PATCH)
+    // null이 아닌 것들만 값을 바꿔 데이터베이스에 저장하기
+    @PatchMapping("/{id}")
+    public Member patch(@PathVariable("id") Long id, @RequestBody Member patch) {
+        Member member = memberRepository.findById(id).orElse(null);
+        if(member != null) {
+            if (patch.getName() != null) member.setName(patch.getName());
+            if (patch.getEmail() != null) member.setEmail(patch.getEmail());
+            if (patch.getAge() != null) member.setAge(patch.getAge());
+            memberRepository.save(member);
+        }
+        return member;
     }
 }
