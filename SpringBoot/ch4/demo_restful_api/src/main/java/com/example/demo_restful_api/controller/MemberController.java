@@ -3,6 +3,7 @@ package com.example.demo_restful_api.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,5 +34,13 @@ public class MemberController {
     @GetMapping
     public List<Member> getAll() {
         return memberRepository.findAll();
+    }
+
+    // 아이디로 회원 조회
+    @GetMapping("/{id}")
+    public Member get(@PathVariable("id") Long id) {
+        // findById() 반환 타입: Optional<Member>
+        // 데이터베이스에 해당 아이디 갖는 회원 정보 없을 때 orElse(null) 사용해 null 반한하도록 함
+        return memberRepository.findById(id).orElse(null);
     }
 }
