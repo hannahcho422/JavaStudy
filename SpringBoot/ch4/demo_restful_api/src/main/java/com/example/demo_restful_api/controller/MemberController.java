@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +43,12 @@ public class MemberController {
         // findById() 반환 타입: Optional<Member>
         // 데이터베이스에 해당 아이디 갖는 회원 정보 없을 때 orElse(null) 사용해 null 반한하도록 함
         return memberRepository.findById(id).orElse(null);
+    }
+
+    // 회원 수정하기
+    @PutMapping("/{id}")
+    public Member put(@PathVariable("id") Long id, @RequestBody Member member) {
+        member.setId(id);
+        return memberRepository.save(member);
     }
 }
