@@ -58,4 +58,10 @@ public class MemberController {
     public MemberResponse patch(@PathVariable("id") Long id, @RequestBody MemberRequest memberRequest) {
         return memberService.patch(id, memberRequest);
     }
+
+    // 회원 삭제
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        memberService.deletById(id);
+    }
 }
