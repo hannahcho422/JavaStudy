@@ -51,6 +51,31 @@ public class MemberService {
         return mapToMemberResponse(member);
     }
 
+    public MemberResponse update(Long id, MemberRequest memberRequest) {
+        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
+        // password, enabled 필드 외의 나머지 항목
+        member.setName(memberRequest.getName());
+        member.setEmail(memberRequest.getEmail());
+        member.setAge(memberRequest.getAge());
+        memberRepository.save(member);
+        return mapToMemberResponse(member);
+    }
+
+    public MemberResponse patch(Long id, MemberRequest memberRequest) {
+        Member member = memberRepository.findById(id).orElseThrow(NotFoundException::new);
+
+        // 전달된 값이 있는 필드만 업데이트
+        if (memberRequest.getName() != null)
+            member.setName(memberRequest.getName());
+        if (memberRequest.getEmail() != null)
+            member.setEmail(memberRequest.getEmail());
+        if (memberRequest.getAge() != null)
+            member.setAge(memberRequest.getAge());
+
+        memberRepository.save(member);
+        return mapToMemberResponse(member);
+    }
+
     private MemberResponse mapToMemberResponse(Member member) {
         return MemberResponse.builder()
                 .id(member.getId())

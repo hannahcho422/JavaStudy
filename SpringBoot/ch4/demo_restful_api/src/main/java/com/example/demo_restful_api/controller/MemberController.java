@@ -47,4 +47,15 @@ public class MemberController {
     public MemberResponse get(@PathVariable("id") Long id) {
         return memberService.findById(id);
     }
+
+    // 회원 수정
+    @PutMapping("/{id}")
+    public MemberResponse put(@PathVariable("id") Long id, @RequestBody MemberRequest memberRequest) {
+        return memberService.update(id, memberRequest);
+    }
+
+    @PatchMapping("/{id}")
+    public MemberResponse patch(@PathVariable("id") Long id, @RequestBody MemberRequest memberRequest) {
+        return memberService.patch(id, memberRequest);
+    }
 }
