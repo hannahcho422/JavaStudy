@@ -36,5 +36,15 @@ public class MemberController {
         return memberService.create(memberRequest);  
     }
 
-    
+    // 회원 조회
+    @GetMapping
+    public List<MemberResponse> getAll() {
+        return memberService.findAll();
+    }
+
+    // 아이디로 회원 조회
+    @GetMapping("/{id}")
+    public MemberResponse get(@PathVariable("id") Long id) {
+        return memberService.findById(id);
+    }
 }
