@@ -21,5 +21,7 @@ public class Practice01 {
 
         System.out.println("Number of capital letters: " + count);
 
+        sc.close();
+
     }
 }
