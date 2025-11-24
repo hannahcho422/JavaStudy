@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo_restful_api.dto.ArticleRequest;
+import com.example.demo_restful_api.dto.ArticleResponse;
 import com.example.demo_restful_api.dto.MemberRequest;
 import com.example.demo_restful_api.dto.MemberResponse;
-// import com.example.demo_restful_api.model.Member;  
+import com.example.demo_restful_api.service.ArticleService;
 import com.example.demo_restful_api.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 
     private final MemberService memberService;
+    private final ArticleService articleService;
 
     // 회원 생성
     @PostMapping
@@ -63,5 +65,12 @@ public class MemberController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         memberService.deletById(id);
+    }
+
+    // 게시글 생성
+    @PostMapping("/{id}/articles")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ArticleResponse postArticle(@PathVariable("id") Long id, @RequestBody ArticleRequest articleRequest) {
+        return articleService.create(id, articleRequest);
     }
 }

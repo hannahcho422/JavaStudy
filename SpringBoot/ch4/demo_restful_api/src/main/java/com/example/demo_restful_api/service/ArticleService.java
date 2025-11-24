@@ -1,5 +1,7 @@
 package com.example.demo_restful_api.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo_restful_api.dto.ArticleRequest;
@@ -18,6 +20,7 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
 
+    // 게시글 작성
     public ArticleResponse create(Long memberId, ArticleRequest articleRequest) {
         Member member = memberRepository.findById(memberId).orElseThrow(NotFoundException::new);
         Article article = Article.builder() 
@@ -26,6 +29,23 @@ public class ArticleService {
                     .member(member).build();
         articleRepository.save(article);
         return mapToArticleResponse(article);
+    }
+
+    // 전체 게시글 목록 조회
+    public List<ArticleResponse>findAll() {
+        return articleRepository.findAll()
+                .stream()
+                .map(this::mapToArticleResponse)
+                .toList();
+    }
+
+    // 특정 회원 게시글 목록 조회
+    public List<ArticleResponse> findByMemberId(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(NotFoundException::new);
+        return articleRepository.findByMember(member)
+                .stream()
+                .map(this::mapToArticleResponse)
+                .toList();
     }
 
     private ArticleResponse mapToArticleResponse(Article article) {
