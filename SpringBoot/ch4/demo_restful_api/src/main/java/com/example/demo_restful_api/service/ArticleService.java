@@ -2,8 +2,11 @@ package com.example.demo_restful_api.service;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo_restful_api.dto.ArticleRequest;
 import com.example.demo_restful_api.dto.ArticleResponse;
+import com.example.demo_restful_api.exception.NotFoundException;
 import com.example.demo_restful_api.model.Article;
+import com.example.demo_restful_api.model.Member;
 import com.example.demo_restful_api.repository.ArticleRepository;
 import com.example.demo_restful_api.repository.MemberRepository;
 
@@ -14,6 +17,16 @@ import lombok.RequiredArgsConstructor;
 public class ArticleService {
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
+
+    public ArticleResponse create(Long memberId, ArticleRequest articleRequest) {
+        Member member = memberRepository.findById(memberId).orElseThrow(NotFoundException::new);
+        Article article = Article.builder() 
+                    .title(articleRequest.getTitle())
+                    .description(articleRequest.getDescription())
+                    .member(member).build();
+        articleRepository.save(article);
+        return mapToArticleResponse(article);
+    }
 
     private ArticleResponse mapToArticleResponse(Article article) {
         return ArticleResponse.builder()
