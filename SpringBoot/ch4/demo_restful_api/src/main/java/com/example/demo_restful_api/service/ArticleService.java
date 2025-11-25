@@ -54,6 +54,15 @@ public class ArticleService {
         return mapToArticleResponse(article);
     }
 
+    // 게시글 아이디 사용해서 게시글 수정
+    public ArticleResponse update(Long id, ArticleRequest articleRequest) {
+        Article article = articleRepository.findById(id).orElseThrow(NotFoundException::new);
+        article.setTitle(articleRequest.getTitle());
+        article.setDescription(articleRequest.getDescription());
+        articleRepository.save(article);
+        return mapToArticleResponse(article);
+    }
+
     private ArticleResponse mapToArticleResponse(Article article) {
         return ArticleResponse.builder()
                 .id(article.getId())
