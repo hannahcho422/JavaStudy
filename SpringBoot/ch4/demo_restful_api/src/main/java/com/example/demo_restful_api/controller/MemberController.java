@@ -1,5 +1,6 @@
 package com.example.demo_restful_api.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,11 @@ import com.example.demo_restful_api.dto.MemberResponse;
 import com.example.demo_restful_api.service.ArticleService;
 import com.example.demo_restful_api.service.MemberService;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequestMapping("/api/members")
@@ -73,4 +78,21 @@ public class MemberController {
     public ArticleResponse postArticle(@PathVariable("id") Long id, @RequestBody ArticleRequest articleRequest) {
         return articleService.create(id, articleRequest);
     }
+
+    // // 게시글 목록 조회 Redirect
+    // @GetMapping("/{id}/articles")
+    // public void getArticle(@PathVariable("id") Long id, HttpServletResponse response) throws ServletException, IOException {
+    //     response.sendRedirect("/api/articles?memberId=" + id);
+    // }
+
+    // 게시글 목록 조회 Forward
+    @GetMapping("/{id}/articles")
+    public void getArticle(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getSession()
+               .getServletContext()
+               .getRequestDispatcher("/api/articles?memberId=" + id)
+               .forward(request, response);
+    }
+    
+    
 }
