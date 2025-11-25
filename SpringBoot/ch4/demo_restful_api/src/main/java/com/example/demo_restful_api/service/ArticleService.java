@@ -62,6 +62,12 @@ public class ArticleService {
         articleRepository.save(article);
         return mapToArticleResponse(article);
     }
+    
+    // 게시글 아이디 사용해서 게시글 삭제
+    public void delete(Long id) {
+        Article article = articleRepository.findById(id).orElseThrow(NotFoundException::new);
+        articleRepository.delete(article);
+    }
 
     private ArticleResponse mapToArticleResponse(Article article) {
         return ArticleResponse.builder()

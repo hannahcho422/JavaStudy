@@ -2,6 +2,7 @@ package com.example.demo_restful_api.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,5 +44,11 @@ public class ArticleController {
     @PutMapping("/{id}")
     public ArticleResponse put(@PathVariable("id") Long id, @RequestBody ArticleRequest articleRequest) {
         return articleService.update(id, articleRequest);
+    }
+
+    // 게시글 아이디 사용해서 게시글 삭제
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id){
+        articleService.delete(id);
     }
 }
