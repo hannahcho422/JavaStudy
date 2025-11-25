@@ -48,6 +48,12 @@ public class ArticleService {
                 .toList();
     }
 
+    // 게시글 아이디 사용해서 게시글 조회
+    public ArticleResponse findById(Long id) {
+        Article article = articleRepository.findById(id).orElseThrow(NotFoundException::new);
+        return mapToArticleResponse(article);
+    }
+
     private ArticleResponse mapToArticleResponse(Article article) {
         return ArticleResponse.builder()
                 .id(article.getId())
