@@ -36,12 +36,20 @@ public class MemberController {
     private final MemberService memberService;
     private final ArticleService articleService;
 
-    // 회원 생성
+    // // 회원 생성
+    // @PostMapping
+    // @ResponseStatus(HttpStatus.CREATED)
+    // public MemberResponse post(@RequestBody MemberRequest memberRequest) {
+    //     return memberService.create(memberRequest);  
+    // }
+
+    // 여러 명의 회원 한 번에 생성
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MemberResponse post(@RequestBody MemberRequest memberRequest) {
-        return memberService.create(memberRequest);  
+    public List<MemberResponse> postBatch(@RequestBody List<MemberRequest> memberRequuests) {
+        return memberService.createBatch(memberRequuests);
     }
+    
 
     // 회원 조회
     @GetMapping

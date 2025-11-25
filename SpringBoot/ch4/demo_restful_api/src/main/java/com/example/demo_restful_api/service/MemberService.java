@@ -1,10 +1,8 @@
 package com.example.demo_restful_api.service;
 
 import java.util.List;
-import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo_restful_api.dto.MemberRequest;
 import com.example.demo_restful_api.dto.MemberResponse;
@@ -12,6 +10,7 @@ import com.example.demo_restful_api.exception.NotFoundException;
 import com.example.demo_restful_api.model.Member;
 import com.example.demo_restful_api.repository.MemberRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -20,6 +19,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    // 회원 생성
     public MemberResponse create(MemberRequest memberRequest) {
         Member member = Member.builder()
                 .name(memberRequest.getName())
@@ -29,6 +29,12 @@ public class MemberService {
                 .build();
         memberRepository.save(member);
         return mapToMemberResponse(member);
+    }
+
+    // 여러 명 한 번에 생성
+    @Transactional
+    public List<MemberResponse> createBatch(List<MemberRequest> memberRequests) {
+        return memberRequests.stream().map(this::create).toList();
     }
 
     public List<MemberResponse> findAll() {
