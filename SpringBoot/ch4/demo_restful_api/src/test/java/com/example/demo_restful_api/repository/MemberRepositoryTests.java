@@ -3,6 +3,9 @@ package com.example.demo_restful_api.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.example.demo_restful_api.model.Member;
 
 @SpringBootTest
+@DisplayName("회원 리포지터리 테스트")
 public class MemberRepositoryTests { 
     @Autowired
     private MemberRepository memberRepository;
@@ -31,12 +35,13 @@ public class MemberRepositoryTests {
     }
 
     @Test
+    @DisplayName("조건 검색 테스트")
     // 리포지터리 메서드 검증
     public void testMemberCase1() {
         // 사용자 리파지토리에 저장된 개수가 4인지 검증
         assertThat(memberRepository.count()).isEqualTo(4);
         // '윤서준'이라는 이름으로 검색된 결과 개수가 1인지 검증
-        assertThat(memberRepository.findByName("윤서준").size()).isEqualTo(2);
+        assertThat(memberRepository.findByName("윤서준").size()).isEqualTo(1);
         // 이름이 '윤서준'이고 이메일이 'SeojunYoon@hanbit.co.kr'인 사용자를 조회한 결과 개수가 1인지 검증
         assertThat(memberRepository.findByNameAndEmail("윤서준", "SeojunYoon@hanbit.co.kr").size()).isEqualTo(1);
         // 이름이 '윤서준'이거나 또는 이메일이 'KwangcheolYoon@hanbit.co.kr'인 사용자를 조회한 결과 개수가 2인지 검증
@@ -56,6 +61,9 @@ public class MemberRepositoryTests {
     }
 
     @Test
+    // @RepeatedTest(3)
+    @RepeatedTest(value = 3, name="테스트 {displayName} 중 {currentRepetition} of {totalRepetitions}")
+    @DisplayName("정렬 순서 테스트")
     // 리포지터리 정렬 방식 검증
     public void testUserCase2() {
         // 사용자 이름 순으로 조회를 한 결과 개수가 4인지 검증
@@ -65,6 +73,8 @@ public class MemberRepositoryTests {
     }
 
     @Test
+    @Disabled("잠시 테스트 중단")
+    @DisplayName("JPQL 테스트")
     // JPQL, native SQL로 작성된 메서드 검증
     public void testUserCase3() {
         assertThat(memberRepository.findMemberByName("윤서준").size()).isEqualTo(1);
