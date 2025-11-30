@@ -15,5 +15,7 @@ public class Practice09 {
         }
 
         System.out.println("Reversed: " + reverse);
+
+        sc.close();
     }
 }
