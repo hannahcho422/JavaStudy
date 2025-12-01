@@ -7,7 +7,7 @@ public class Practice11 {
 
         int[] seats = {0, 0, 0, 0, 0, 1, 1, 1, 0, 0};
         
-        System.out.print("Book seats? (0: No, 1: Yes)");
+        System.out.print("Book seats? (0: No, 1: Yes) ");
         int num = sc.nextInt();
 
         while (num == 1) {
@@ -18,23 +18,23 @@ public class Practice11 {
             for (int i = 0; i < seats.length; i++) {
                 System.out.print(seats[i] + " ");
             }
-            System.out.print("\nWhich seat would you like to book for?");
+            System.out.print("\nWhich seat would you like to book for? ");
             int seatNum = sc.nextInt();
 
             while (seatNum < 1 || seatNum > seats.length) {
-                System.out.println("Invalid seat number. Please choose between 1 and 10.");
+                System.out.print("Invalid seat number. Please choose between 1 and 10. ");
                 seatNum = sc.nextInt();
             } 
             
             while (seats[seatNum - 1] == 1) {
-                System.out.println("Seat " + seatNum + " is already booked. Choose another seat.");
+                System.out.print("Seat " + seatNum + " is already booked. Choose another seat. ");
                 seatNum = sc.nextInt();
             }
 
             seats[seatNum - 1] = 1;
             System.out.println("Successfully booked seat " + seatNum + ".");
 
-            System.out.print("Book seats? (0: No, 1: Yes)");
+            System.out.print("Book seats? (0: No, 1: Yes) ");
             num = sc.nextInt();
 
         } 
