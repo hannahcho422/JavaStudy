@@ -1,8 +1,21 @@
-// 사용자로부터 받은 문자열에서 자음 모음 개수 출력
 import java.util.Scanner;
 
-public class Practice10 {
+enum Vowel {
+    A, E, I, O, U;
 
+    // ch가 모음인지 확인하는 정적 메서드
+    public static boolean isVowel(char ch) {
+        ch = Character.toLowerCase(ch);
+        for (Vowel v : values()) {
+            if (v.name().toLowerCase().charAt(0) == ch) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+public class Practice10_1 {
     public static void main (String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -12,24 +25,21 @@ public class Practice10 {
         int vowels = 0;
         int consonants = 0;
 
-        input = input.toLowerCase();
-
         for (int i = 0; i < input.length(); i++) {
             char ch = input.charAt(i);
-            if (ch >= 'a' && ch <= 'z') {   // 알파벳인지 확인
-                if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
+
+            if (Character.isAlphabetic(ch)) {
+                if (Vowel.isVowel(ch)) {
                     vowels++;
                 } else {
                     consonants++;
                 }
-            
             }
         }
 
-        System.out.println("Number of vowles: " + vowels);
+        System.out.println("Number of vowels: " + vowels);
         System.out.println("Number of consonants: " + consonants);
 
         sc.close();
-       
     }
 }
