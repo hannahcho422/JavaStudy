@@ -39,4 +39,11 @@ public class ExpressionController {
         model.addAttribute("productCount", 3502340);
         return "expression/numbers";
     }
+
+    @GetMapping("/condition")
+    public String getCondition(Model model) {
+        model.addAttribute("showWelcome", true);
+        model.addAttribute("showDescription", false);
+        return "expression/condition";
+    }
 }
