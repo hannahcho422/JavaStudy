@@ -5,7 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-    <h1 th:text="${title}">스프링 부트</h1>
-        <p th:text="${description}">스프링 부트 with Thymeleaf</p>
+    <p th:text="#{welcome}">Greetings</p>
+    <p th:text="#{welcome.description}">Greetings</p>
+    <p th:utext="#{welcome.description}">Greetings</p>
 </body>
 </html> 
