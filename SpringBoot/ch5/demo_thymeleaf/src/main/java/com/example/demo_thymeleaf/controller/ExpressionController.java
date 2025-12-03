@@ -33,4 +33,10 @@ public class ExpressionController {
         return "expression/calendar";
     }
     
+    @GetMapping("/numbers")
+    public String getNumbers(Model model) {
+        model.addAttribute("productPrice", 345620.5226);
+        model.addAttribute("productCount", 3502340);
+        return "expression/numbers";
+    }
 }
