@@ -7,11 +7,22 @@
 <body>
 <p>회원 목록</p>
 <table>
+    <tr th:each="member, iteration : ${members}"
+        th:style="${iteration.odd}?'background-color: lightgray;'">
+        <td th:text="${iteration.count}">iteration</td>
+        <td th:text="${member.name}">윤서준</td>
+        <td th:text="${member.email}">SeojunYoon@hanbit.co.kr</td>
+        <td th:text="${member.age}">10</td>
+    </tr>      
+</table> 
+<!--
+<table>
     <tr th:each="member : ${members}">
         <td th:text="${member.name}">윤서준</td>
         <td th:text="${member.email}">SeojunYoon@hanbit.co.kr</td>
         <td th:text="${member.age}">10</td>
     </tr>      
-</table>
+</table> 
+-->
 </body>
 </html> 
