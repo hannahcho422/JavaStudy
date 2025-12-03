@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 목록</title>
+</head>
+<body>
+<p>회원 목록</p>
+<table>
+    <tr th:each="member : ${members}">
+        <td th:text="${member.name}">윤서준</td>
+        <td th:text="${member.email}">SeojunYoon@hanbit.co.kr</td>
+        <td th:text="${member.age}">10</td>
+    </tr>      
+</table>
+</body>
+</html> 

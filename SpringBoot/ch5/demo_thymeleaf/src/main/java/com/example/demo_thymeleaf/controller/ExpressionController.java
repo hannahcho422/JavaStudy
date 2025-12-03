@@ -20,12 +20,14 @@ public class ExpressionController {
         new Member("김도윤", "DoyunKim@hanbiit.co.kr", 11)
     );
 
+    // 자바 객체 사용
     @GetMapping("/object")
     public String getMember(Model model) {
         model.addAttribute("member", members.getFirst());
         return "expression/object";
     }
 
+    // 유틸리티 객체 사용 - calendars
     @GetMapping("/calendars")
     public String getCalendars(Model model) {
         Date date = Calendar.getInstance().getTime();
@@ -33,6 +35,7 @@ public class ExpressionController {
         return "expression/calendar";
     }
     
+    // 유틸리티 객체 사용 - numbers
     @GetMapping("/numbers")
     public String getNumbers(Model model) {
         model.addAttribute("productPrice", 345620.5226);
@@ -40,10 +43,20 @@ public class ExpressionController {
         return "expression/numbers";
     }
 
+    // 조건문 사용
     @GetMapping("/condition")
     public String getCondition(Model model) {
         model.addAttribute("showWelcome", true);
         model.addAttribute("showDescription", false);
         return "expression/condition";
     }
+
+    // 반복문 사용
+    @GetMapping("/loop")
+    public String getMemberList(Model model) {
+        model.addAttribute("members", members);
+        return "expression/loop";
+    }
+
+    
 }
