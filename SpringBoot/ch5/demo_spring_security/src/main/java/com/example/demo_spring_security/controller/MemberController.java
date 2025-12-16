@@ -1,4 +1,4 @@
-package com.exmaple.demo_spring_security;
+package com.example.demo_spring_security.controller;
 
 import java.util.List;
 
