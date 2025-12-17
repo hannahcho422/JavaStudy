@@ -6,7 +6,6 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,24 +44,23 @@ public class SecurityConfiguration {
     }
 
     /**
-     * Security Filter Chain
+     * Security Filter Chain (Custom Login / Logout)
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(
-                HttpSecurity http, RememberMeServices rememberMeServices) throws Exception {
-        http
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http 
             .authorizeHttpRequests(authorize -> authorize
-                // .requestMatchers("/", "/home").permitAll()
-                // .requestMatchers("/member/**").hasAuthority("ROLE_ADMIN")
-                .anyRequest().authenticated()
-            )
-            // .rememberMe(withDefaults())
-            .rememberMe(remember -> remember
-                .rememberMeServices(rememberMeServices))
-            .formLogin(withDefaults())
-            .logout(withDefaults());
-
-        return http.build();
+                .anyRequest().authenticated())
+            .formLogin(login -> login
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .permitAll())
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/home")
+                .permitAll());
+        
+        return http.build();         
     }
 
     /**
@@ -121,4 +119,25 @@ public class SecurityConfiguration {
 //    public UserDetailsManager userDetailsManagerJdbc(DataSource dataSource) {
 //        return new JdbcUserDetailsManager(dataSource);
 //    }
+
+    /**
+     * Security Filter Chain
+     */
+    // @Bean
+    // public SecurityFilterChain securityFilterChain(
+    //             HttpSecurity http, RememberMeServices rememberMeServices) throws Exception {
+    //     http
+    //         .authorizeHttpRequests(authorize -> authorize
+    //             // .requestMatchers("/", "/home").permitAll()
+    //             // .requestMatchers("/member/**").hasAuthority("ROLE_ADMIN")
+    //             .anyRequest().authenticated()
+    //         )
+    //         // .rememberMe(withDefaults())
+    //         .rememberMe(remember -> remember
+    //             .rememberMeServices(rememberMeServices))
+    //         .formLogin(withDefaults())
+    //         .logout(withDefaults());
+
+    //     return http.build();
+    // }
 }
