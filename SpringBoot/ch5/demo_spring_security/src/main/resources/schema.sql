@@ -1,3 +1,11 @@
+--for PersistentTokenRepository
+--https://docs.spring.io/spring-security/reference/servlet/authentication/rememberme.html#remember-me-persistent-token
+create table persistent_logins (username varchar(64) not null,
+								series varchar(64) primary key,
+								token varchar(64) not null,
+								last_used timestamp not null);
+
+
 --for JdbcUserDetailsManager
 --https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/jdbc.html#servlet-authentication-jdbc-schema
 create table users (

@@ -2,6 +2,8 @@ package com.example.demo_spring_security.config;
 
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -11,6 +13,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import com.example.demo_spring_security.model.Authority;
 import com.example.demo_spring_security.model.Member;
@@ -21,18 +27,38 @@ import com.example.demo_spring_security.repository.MemberRepository;
 @Configuration
 public class SecurityConfiguration {
 
+    @Bean
+    PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
+        JdbcTokenRepositoryImpl repository = new JdbcTokenRepositoryImpl();
+        repository.setDataSource(dataSource);
+        return repository;
+    }
+
+    @Bean
+    RememberMeServices rememberMeServices(
+                UserDetailsService userDetailsService, 
+                PersistentTokenRepository tokenRepository) {
+        return new PersistentTokenBasedRememberMeServices(
+            "myRememberKey", 
+            userDetailsService, 
+            tokenRepository);
+    }
+
     /**
      * Security Filter Chain
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+                HttpSecurity http, RememberMeServices rememberMeServices) throws Exception {
         http
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/home").permitAll()
-                .requestMatchers("/member/**").hasAuthority("ROLE_ADMIN")
+                // .requestMatchers("/", "/home").permitAll()
+                // .requestMatchers("/member/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
             )
-            .rememberMe(withDefaults())
+            // .rememberMe(withDefaults())
+            .rememberMe(remember -> remember
+                .rememberMeServices(rememberMeServices))
             .formLogin(withDefaults())
             .logout(withDefaults());
 
