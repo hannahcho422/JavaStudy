@@ -6,6 +6,8 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import com.example.demo_spring_security.model.Authority;
 import com.example.demo_spring_security.model.Member;
@@ -48,6 +51,20 @@ public class SecurityConfiguration {
             }
         
         };
+    }
+
+    // Authorization
+    @Bean 
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/", "/home").permitAll()
+                .requestMatchers("/member/**").hasAuthority("ROLE_ADMIN")
+                .anyRequest().authenticated())
+            .formLogin(withDefaults())      // Spring Security가 디폴트로 제공하는 로그인 화면 사용
+            .logout(withDefaults());        // Spring Security가 디폴트로 제공하는 로그아웃 화면 사용
+
+        return http.build();
     }
 }
 
