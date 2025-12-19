@@ -1,5 +1,7 @@
 package com.example.demo_board.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo_board.dto.ArticleDto;
@@ -26,5 +28,9 @@ public class ArticleService {
                 .name(article.getMember().getName())
                 .email(article.getMember().getEmail())
                 .build();
+    }
+
+    public List<ArticleDto> findAll() {
+        return articleRepository.findAll().stream().map(this::mapToArticleDto).toList();
     }
 }
