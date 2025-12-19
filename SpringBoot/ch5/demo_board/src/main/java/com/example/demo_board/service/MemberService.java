@@ -45,4 +45,15 @@ public class MemberService {
     public Optional<MemberDto> findByEmail(String email) {
         return memberRepository.findByEmail(email).map(this::mapToMemberDto);
     }
+
+    public boolean checkPassword(Long id, String password) {
+        Member member = memberRepository.findById(id).orElseThrow();
+        return passwordEncoder.matches(password, member.getPassword());
+    }
+
+    public void updatePassword(Long id, String password) {
+        Member member = memberRepository.findById(id).orElseThrow();
+        member.setPassword(passwordEncoder.encode(password));
+        memberRepository.save(member);
+    }
 }
