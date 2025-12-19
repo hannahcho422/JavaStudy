@@ -2,6 +2,8 @@ package com.example.demo_board.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo_board.dto.ArticleDto;
@@ -16,6 +18,10 @@ import lombok.RequiredArgsConstructor;
 public class ArticleService {
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
+
+    public Page<ArticleDto> findAll(Pageable pageable) {
+        return articleRepository.findAll(pageable).map(this::mapToArticleDto);
+    }
 
     private ArticleDto mapToArticleDto(Article article) {
         return ArticleDto.builder()
