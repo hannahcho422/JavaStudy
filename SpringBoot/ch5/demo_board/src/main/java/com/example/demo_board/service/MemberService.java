@@ -1,9 +1,12 @@
 package com.example.demo_board.service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo_board.dto.MemberDto;
+import com.example.demo_board.dto.MemberForm;
 import com.example.demo_board.model.Member;
 import com.example.demo_board.repository.ArticleRepository;
 import com.example.demo_board.repository.MemberRepository;
@@ -27,5 +30,19 @@ public class MemberService {
                 .name(member.getName())
                 .email(member.getEmail())
                 .build();
+    }
+
+    public MemberDto create(MemberForm memberForm) {
+        Member member = Member.builder()
+            .name(memberForm.getName())
+            .password(passwordEncoder.encode(memberForm.getPassword()))
+            .email(memberForm.getEmail())
+            .build();
+        memberRepository.save(member);
+        return mapToMemberDto(member);
+    }
+
+    public Optional<MemberDto> findByEmail(String email) {
+        return memberRepository.findByEmail(email).map(this::mapToMemberDto);
     }
 }
