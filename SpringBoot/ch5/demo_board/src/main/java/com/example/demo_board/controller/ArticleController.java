@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo_board.dto.ArticleDto;
 import com.example.demo_board.service.ArticleService;
@@ -25,5 +26,11 @@ public class ArticleController {
         List<ArticleDto> articles = articleService.findAll();
         model.addAttribute("articles", articles);
         return "article-list";
+    }
+
+     @GetMapping("/content")
+    public String getArticle(@RequestParam("id") Long id, Model model) {
+        model.addAttribute("article", articleService.findById(id));
+        return "article-content";
     }
 }
