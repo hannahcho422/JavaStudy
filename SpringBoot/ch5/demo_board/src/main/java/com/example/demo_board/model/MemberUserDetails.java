@@ -1,22 +1,24 @@
 package com.example.demo_board.model;
 
+import java.util.Collection;
 import java.util.List;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class MemberUserDetails implements UserDetails {
-    // UserDetails default 구현 : getUsername(), getPassword(), getAuthorities()
-    private String username;
-    private String password;
-    private List<SimpleGrantedAuthority> authorities;
+
+    private final String username;
+    private final String password;
+    private final List<GrantedAuthority> authorities;
 
     // Extras
-    private String displayName;
-    private Long memberId;
+    private final String displayName;
+    private final Long memberId;
 
     public MemberUserDetails(Member member, List<Authority> authorities) {
         this.username = member.getEmail();
@@ -24,7 +26,18 @@ public class MemberUserDetails implements UserDetails {
         this.password = member.getPassword();
         this.memberId = member.getId();
         this.authorities = authorities.stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
+                .map(a -> new SimpleGrantedAuthority(a.getAuthority()))
+                .map(ga -> (GrantedAuthority) ga)
                 .toList();
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override public boolean isAccountNonExpired() { return true; }
+    @Override public boolean isAccountNonLocked() { return true; }
+    @Override public boolean isCredentialsNonExpired() { return true; }
+    @Override public boolean isEnabled() { return true; }
 }

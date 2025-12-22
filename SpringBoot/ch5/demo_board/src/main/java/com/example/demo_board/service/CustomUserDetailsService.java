@@ -2,7 +2,6 @@ package com.example.demo_board.service;
 
 import java.util.List;
 
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo_board.model.Authority;
 import com.example.demo_board.model.Member;
+import com.example.demo_board.model.MemberUserDetails;
 import com.example.demo_board.repository.AuthorityRepository;
 import com.example.demo_board.repository.MemberRepository;
 
@@ -28,12 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         List<Authority> authorities = authorityRepository.findByMember(member);
 
-        return User.builder()
-            .username(member.getEmail())
-            .password(member.getPassword())
-            .authorities(authorities.stream()
-                .map(Authority::getAuthority)
-                .toArray(String[]::new))
-            .build();
+        return new MemberUserDetails(member, authorities);
     }
 }
