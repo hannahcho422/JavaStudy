@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo_board.dto.ArticleDto;
+import com.example.demo_board.dto.ArticleForm;
 import com.example.demo_board.model.Article;
+import com.example.demo_board.model.Member;
 import com.example.demo_board.repository.ArticleRepository;
 import com.example.demo_board.repository.MemberRepository;
 
@@ -25,6 +27,16 @@ public class ArticleService {
 
     public ArticleDto findById(Long id) {
         return articleRepository.findById(id).map(this::mapToArticleDto).orElseThrow();
+    }
+
+    public ArticleDto create(Long memberId, ArticleForm articleForm) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        Article article = Article.builder()
+                .title(articleForm.getTitle())
+                .description(articleForm.getDescription())
+                .member(member).build();
+        articleRepository.save(article);
+        return mapToArticleDto(article);
     }
 
     private ArticleDto mapToArticleDto(Article article) {

@@ -3,13 +3,18 @@ package com.example.demo_board.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo_board.dto.ArticleDto;
+import com.example.demo_board.dto.ArticleForm;
+import com.example.demo_board.model.MemberUserDetails;
 import com.example.demo_board.service.ArticleService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,5 +42,12 @@ public class ArticleController {
     public String getArticle(@RequestParam("id") Long id, Model model) {
         model.addAttribute("article", articleService.findById(id));
         return "article-content";
+    }
+
+    @PostMapping("/add")
+    public String postArticleAdd(@ModelAttribute("article") ArticleForm articleForm, 
+                                 @AuthenticationPrincipal MemberUserDetails userDetails) {
+        articleService.create(userDetails.getMemberId(), articleForm);
+        return "redirect:/article/list";
     }
 }
