@@ -6,6 +6,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import com.example.demo_board.dto.ArticleForm;
 import com.example.demo_board.model.MemberUserDetails;
 import com.example.demo_board.service.ArticleService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,15 +46,35 @@ public class ArticleController {
         return "article-content";
     }
 
-    @GetMapping("/add")
-    public String getArticleAdd(Model model) {
-        model.addAttribute("article", new ArticleForm());
-        return "article-add";
-    }
+    // @GetMapping("/add")
+    // public String getArticleAdd(Model model) {
+    //     model.addAttribute("article", new ArticleForm());
+    //     return "article-add";
+    // }
+
+    // @PostMapping("/add")
+    // public String postArticleAdd(@ModelAttribute("article") ArticleForm articleForm, 
+    //                              @AuthenticationPrincipal MemberUserDetails userDetails) {
+    //     articleService.create(userDetails.getMemberId(), articleForm);
+    //     return "redirect:/article/list";
+    // }
 
     @PostMapping("/add")
-    public String postArticleAdd(@ModelAttribute("article") ArticleForm articleForm, 
+    public String postArticleAdd(@Valid @ModelAttribute("article") ArticleForm articleForm,
+                                 BindingResult bindingResult,
                                  @AuthenticationPrincipal MemberUserDetails userDetails) {
+
+        if (articleForm.getTitle() != null && articleForm.getTitle().contains("T발")) {
+            bindingResult.rejectValue("title", "SlangDetected", "욕설을 사용하지 마세요");
+        }
+        if (articleForm.getDescription() != null && articleForm.getDescription().contains("T발")) {
+            bindingResult.rejectValue("description", "SlangDetected", "욕설을 사용하지 마세요");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "article-add";
+        }
+
         articleService.create(userDetails.getMemberId(), articleForm);
         return "redirect:/article/list";
     }
