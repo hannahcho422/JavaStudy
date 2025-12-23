@@ -21,6 +21,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/", "/article/list", "/article/content").permitAll()
                 .requestMatchers("/member/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/signup").permitAll()
+                .requestMatchers("/article/add").authenticated()
                 .anyRequest().authenticated()
             )
             .csrf(csrf -> csrf

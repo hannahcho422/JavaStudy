@@ -44,6 +44,12 @@ public class ArticleController {
         return "article-content";
     }
 
+    @GetMapping("/add")
+    public String getArticleAdd(Model model) {
+        model.addAttribute("article", new ArticleForm());
+        return "article-add";
+    }
+
     @PostMapping("/add")
     public String postArticleAdd(@ModelAttribute("article") ArticleForm articleForm, 
                                  @AuthenticationPrincipal MemberUserDetails userDetails) {
