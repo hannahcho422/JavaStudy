@@ -2,7 +2,6 @@ package com.example.demo_board.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,10 +16,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/image/**", "/css/**", "/js/**", "/favicon.ico").permitAll()
+
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/", "/article/list", "/article/content").permitAll()
-                .requestMatchers("/member/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/signup").permitAll()
+                .requestMatchers("/member/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/article/add").authenticated()
                 .anyRequest().authenticated()
             )
@@ -28,13 +29,17 @@ public class SecurityConfiguration {
                 .ignoringRequestMatchers("/h2-console/**")
             )
             .headers(headers -> headers
-                .frameOptions(frame -> frame.sameOrigin()))
-            .httpBasic(withDefaults())
+                .frameOptions(frame -> frame.sameOrigin()
+            ))
             .formLogin(form -> form
-                .loginPage("/login").defaultSuccessUrl("/").permitAll()
+                .loginPage("/login")
+                .defaultSuccessUrl("/", true)  
+                .permitAll()
             )
             .logout(logout -> logout
-                .logoutUrl("/logout").logoutSuccessUrl("/").permitAll()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .permitAll()
             );
 
         return http.build();
