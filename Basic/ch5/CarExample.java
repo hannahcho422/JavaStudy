@@ -3,7 +3,7 @@ public class CarExample {
         // Car 객체 생성
         Car myCar = new Car();
 
-        // 필드갑 출력
+        // 필드값 출력
         System.out.println("제작회사: " + myCar.company);
         System.out.println("모델명: " + myCar.model);
         System.out.println("색깔: " + myCar.color);
