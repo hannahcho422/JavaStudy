@@ -47,6 +47,11 @@ public class ArticleService {
         return mapToArticleDto(article);
     }
 
+    public void delete(Long id) {
+        Article article = articleRepository.findById(id).orElseThrow();
+        articleRepository.delete(article);
+    }
+
     private ArticleDto mapToArticleDto(Article article) {
         return ArticleDto.builder()
                 .id(article.getId())
