@@ -13,6 +13,7 @@ import com.example.demo_board.model.Member;
 import com.example.demo_board.repository.ArticleRepository;
 import com.example.demo_board.repository.MemberRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -51,6 +52,13 @@ public class MemberService {
         if (memberForm.getEmail() != null) member.setEmail(memberForm.getEmail());
         memberRepository.save(member);
         return mapToMemberDto(member);
+    }
+
+    @Transactional
+    public void deleteById(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow();
+        articleRepository.deleteAllByMember(member);
+        memberRepository.delete(member);
     }
 
     public boolean checkPassword(Long id, String password) {

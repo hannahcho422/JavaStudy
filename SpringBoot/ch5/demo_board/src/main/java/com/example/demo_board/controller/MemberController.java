@@ -51,4 +51,10 @@ public class MemberController {
         memberForm.setEmail((memberDto.getEmail()));
         return "member-edit";
     }
+
+    @GetMapping("/delete")
+    public String getMemberDelete(@RequestParam("id") Long id) {
+        memberService.deleteById(id);
+        return "redirect:/member/list";
+    }
 }
