@@ -39,6 +39,14 @@ public class ArticleService {
         return mapToArticleDto(article);
     }
 
+    public ArticleDto update(ArticleForm articleForm) {
+        Article article = articleRepository.findById(articleForm.getId()).orElseThrow();
+        article.setTitle(articleForm.getTitle());
+        article.setDescription(articleForm.getDescription());
+        articleRepository.save(article);
+        return mapToArticleDto(article);
+    }
+
     private ArticleDto mapToArticleDto(Article article) {
         return ArticleDto.builder()
                 .id(article.getId())
