@@ -2,6 +2,8 @@ package com.example.demo_board.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +22,6 @@ public class MemberService {
     private final ArticleRepository articleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public MemberDto findById(Long id) {
-        return memberRepository.findById(id).map(this::mapToMemberDto).orElseThrow();
-    }
-
-    private MemberDto mapToMemberDto(Member member) {
-        return MemberDto.builder()
-                .id(member.getId())
-                .name(member.getName())
-                .email(member.getEmail())
-                .build();
-    }
-
     public MemberDto create(MemberForm memberForm) {
         Member member = Member.builder()
             .name(memberForm.getName())
@@ -42,8 +32,16 @@ public class MemberService {
         return mapToMemberDto(member);
     }
 
+    public MemberDto findById(Long id) {
+        return memberRepository.findById(id).map(this::mapToMemberDto).orElseThrow();
+    }
+
     public Optional<MemberDto> findByEmail(String email) {
         return memberRepository.findByEmail(email).map(this::mapToMemberDto);
+    }
+
+    public Page<MemberDto> findAll(Pageable pageable) {
+        return memberRepository.findAll(pageable).map(this::mapToMemberDto);
     }
 
     public boolean checkPassword(Long id, String password) {
@@ -55,5 +53,13 @@ public class MemberService {
         Member member = memberRepository.findById(id).orElseThrow();
         member.setPassword(passwordEncoder.encode(password));
         memberRepository.save(member);
+    }
+
+    private MemberDto mapToMemberDto(Member member) {
+        return MemberDto.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .email(member.getEmail())
+                .build();
     }
 }
