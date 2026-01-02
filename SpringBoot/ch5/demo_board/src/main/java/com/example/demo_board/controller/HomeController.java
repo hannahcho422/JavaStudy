@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class HomeController {
     private final MemberService memberService;
 
-    @GetMapping
+    @GetMapping("/")
     public String getHome() {
         return "forward:/article/list";
     }
