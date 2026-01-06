@@ -2,7 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.0.0'
 	id 'io.spring.dependency-management' version '1.1.7'
-	id 'war'
+	// id 'war'
 }
 
 group = 'com.example'
@@ -26,8 +26,8 @@ repositories {
 }
 
 dependencies {
-	// implementation 'org.springframework.boot:spring-boot-h2console'
-	// implementation 'org.springframework:spring-web'
+	implementation 'org.springframework.boot:spring-boot-h2console'
+	implementation 'org.springframework:spring-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -37,8 +37,8 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-	// runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+    // providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test' 
@@ -49,11 +49,11 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-tasks.named("war") {
-    enabled = false
-}
+// tasks.named("war") {
+//     enabled = false
+// }
 
-tasks.named("bootWar") {
-    enabled = true
-    archiveFileName = "ROOT.war"
-}
+// tasks.named("bootWar") {
+//     enabled = true
+//     archiveFileName = "ROOT.war"
+// }
