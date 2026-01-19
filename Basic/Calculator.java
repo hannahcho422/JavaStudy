@@ -10,5 +10,23 @@ public class Calculator {
     }
 
     // methods
-    public int Add
+    public int add() {
+        return num1 + num2;
+    }
+
+    public int subtract() {
+        return num1 - num2;
+    }
+
+    public int multiply() {
+        return num1 * num2;
+    }
+
+    public double divide() {
+        return (double) num1 / num2;
+    }
+
+    public int modulus() {
+        return num1 % num2;
+    }
 }
