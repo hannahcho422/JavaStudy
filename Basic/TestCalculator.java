@@ -3,8 +3,6 @@ import java.util.Scanner;
 public class TestCalculator {
     public static void main(String[] args) {
 
-        double result;
-
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Enter: number1 OperationalSymbol(+, -, *, /, %) number2: ");
@@ -20,27 +18,47 @@ public class TestCalculator {
             op = sc.next().charAt(0);
         }
 
-        Calculator cal = new Calculator(num1, num2);
-
-        switch(op) {
-        case '+':
-            result = cal.add();
-            break;
-        case '-':
-            result = cal.subtract();
-            break;
-        case '*':
-            result = cal.multiply();
-            break;
-        case '/':
-            result = cal.divide();
-        case '%':
-            result = cal.modulus();
-        default:
-            result = 0;     // validation 했기 때문에 사실상 여기 오지 않음
+        // operand validaton
+        if((op == '/' || op == '%') && (num2 == 0)) {
+            System.out.println("Error: cannot divide by 0");
+            sc.close();
+            return;
         }
 
-        System.out.println("\nResult: " + result);
+        Calculator cal = new Calculator(num1, num2);
+
+        if (op == '/' || op == '%') {
+            double result;
+            switch(op) {
+            case '/':
+                result = cal.divide();
+                break;
+            case '%':
+                result = (double) cal.modulus();
+                break;
+            default:
+                result = 0.0;    // validation 했기 때문에 사실상 여기 오지 않음
+            }
+            System.out.println("Result: " + result);
+            
+        } else {
+            int result;
+
+            switch(op) {
+            case '+':
+                result = cal.add();
+                break;
+            case '-':
+                result = cal.subtract();
+                break;
+            case '*':
+                result = cal.multiply();
+                break;
+            default:
+                result = 0;     // 사실상 오지 않음
+            }
+            System.out.println("Result: " + result);
+        }
         
         sc.close();
     }
