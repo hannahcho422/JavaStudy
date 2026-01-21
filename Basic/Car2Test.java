@@ -19,7 +19,7 @@ public class Car2Test {
             System.out.print("Model: ");
             String model = sc.nextLine();
 
-            System.out.print("Color");
+            System.out.print("Color: ");
             String color = sc.nextLine();
 
             // 1. heap에 새로운 Car2 객체 생성
