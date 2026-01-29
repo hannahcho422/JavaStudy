@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Local application config (secrets) ###
+# 어떤 폴더에 있든 전부 무시
+**/application-local.properties
+**/application-*.local.properties
+.env
