@@ -1,5 +1,6 @@
 package com.example.demo_rag;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.ai.embedding.EmbeddingResponse;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiEmbeddingModel;
 import org.springframework.ai.reader.TextReader;
+import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +111,15 @@ public class OpenAiEmbeddingModelTests {
         DocumentReader reader = new TextReader("classpath:/운수좋은날.txt");
         List<Document> documents = reader.read();
         documents.forEach(document -> document.getMetadata().put("category", "소설"));
+        TokenTextSplitter splitter = new TokenTextSplitter();
+        vectorStore.write(splitter.split(documents));
+    }
+
+    @Test
+    public void pdfReader() throws IOException {
+        PagePdfDocumentReader reader = new PagePdfDocumentReader("classpath:/인공지능_시대의_예술.pdf");
+        List<Document> documents = reader.read();
+        documents.forEach(document -> document.getMetadata().put("article", "ai"));
         TokenTextSplitter splitter = new TokenTextSplitter();
         vectorStore.write(splitter.split(documents));
     }
