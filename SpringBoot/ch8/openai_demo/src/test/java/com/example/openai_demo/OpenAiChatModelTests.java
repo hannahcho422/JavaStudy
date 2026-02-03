@@ -1,5 +1,8 @@
 package com.example.openai_demo;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -129,7 +132,6 @@ public class OpenAiChatModelTests {
                 .text("이 오디오 파일의 내용에 대해 요약해 주세요")
                 .media(media)
                 .build();
-
         var chatOptions = OpenAiChatOptions.builder()
                 .model(OpenAiApi.ChatModel.GPT_4_O_AUDIO_PREVIEW)
                 .build();
@@ -137,9 +139,29 @@ public class OpenAiChatModelTests {
                 .messages(userMessage)
                 .chatOptions(chatOptions)
                 .build();
+
         ChatResponse response = chatModel.call(prompt);
 
         System.out.println("result = " + response.getResult().getOutput().getText());
+    }
+
+    @Test
+    public void testChatModelAudioOutput() throws IOException {
+        ChatResponse response = chatModel.call(new Prompt("스프링부트에 대해 간단하게 설명해 주세요",
+                OpenAiChatOptions.builder()
+                        .temperature(0.5)
+                        .model(OpenAiApi.ChatModel.GPT_4_O_AUDIO_PREVIEW)
+                        .outputModalities(List.of("text", "audio"))
+                        .outputAudio(new OpenAiApi.ChatCompletionRequest.AudioParameters(
+                                OpenAiApi.ChatCompletionRequest.AudioParameters.Voice.NOVA,
+                                OpenAiApi.ChatCompletionRequest.AudioParameters.AudioResponseFormat.MP3)
+                        ).build()));
+
+        String text = response.getResult().getOutput().getText(); // audio transcript
+        System.out.println("result = " + text);
+
+        byte[] audio = response.getResult().getOutput().getMedia().getFirst().getDataAsByteArray(); // audio data
+        Files.write(Paths.get("D:\\archive\\audio\\ai_chat_audio.mp3"), audio);
     }
 }
 
