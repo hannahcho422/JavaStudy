@@ -163,5 +163,34 @@ public class OpenAiChatModelTests {
         byte[] audio = response.getResult().getOutput().getMedia().getFirst().getDataAsByteArray(); // audio data
         Files.write(Paths.get("D:\\archive\\audio\\ai_chat_audio.mp3"), audio);
     }
+
+    @Test
+    public void testChatModelAudioInputOutput() throws IOException {
+        var audioResource = new ClassPathResource("sample_audio_ask.mp3");
+        var media = Media.builder()
+                .mimeType(MimeTypeUtils.parseMimeType("audio/mp3"))
+                .data(audioResource)
+                .build();
+        var userMessage =UserMessage.builder()
+                .text("질문에 친절하고 간략하게 답변해 주세요")
+                .media(media)
+                .build();
+
+        ChatResponse response = chatModel.call(new Prompt(userMessage,
+        OpenAiChatOptions.builder()
+                .temperature(0.5)
+                .model(OpenAiApi.ChatModel.GPT_4_O_AUDIO_PREVIEW)
+                .outputModalities(List.of("text", "audio"))
+                .outputAudio(new OpenAiApi.ChatCompletionRequest.AudioParameters(
+                        OpenAiApi.ChatCompletionRequest.AudioParameters.Voice.NOVA,
+                        OpenAiApi.ChatCompletionRequest.AudioParameters.AudioResponseFormat.MP3)
+                ).build()));
+
+        String text = response.getResult().getOutput().getText(); // audio transcript
+        System.out.println("result = " + text);
+
+        byte[] audio = response.getResult().getOutput().getMedia().getFirst().getDataAsByteArray(); // audio data
+        Files.write(Paths.get("D:\\archive\\audio\\ai_chat_audio_answer.mp3"), audio);
+    }
 }
 
