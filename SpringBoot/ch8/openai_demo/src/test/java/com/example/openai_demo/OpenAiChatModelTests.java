@@ -19,6 +19,7 @@ import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.MimeTypeUtils;
@@ -115,6 +116,30 @@ public class OpenAiChatModelTests {
 
         String response = chatModel.call(message);
         System.out.println("result = " + response);
+    }
+
+    @Test
+    public void testChatModelAudioInput() {
+        var audioResource = new ClassPathResource("sample_audio.mp3");
+        var media = Media.builder()
+                .mimeType(MimeTypeUtils.parseMimeType("audio/mp3"))
+                .data(audioResource)
+                .build();
+        var userMessage = UserMessage.builder()
+                .text("이 오디오 파일의 내용에 대해 요약해 주세요")
+                .media(media)
+                .build();
+
+        var chatOptions = OpenAiChatOptions.builder()
+                .model(OpenAiApi.ChatModel.GPT_4_O_AUDIO_PREVIEW)
+                .build();
+        var prompt = Prompt.builder()
+                .messages(userMessage)
+                .chatOptions(chatOptions)
+                .build();
+        ChatResponse response = chatModel.call(prompt);
+
+        System.out.println("result = " + response.getResult().getOutput().getText());
     }
 }
 
