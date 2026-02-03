@@ -13,11 +13,16 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.content.Media;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.util.MimeTypeUtils;
+
 
 @SpringBootTest
 public class OpenAiChatModelTests {
@@ -93,4 +98,23 @@ public class OpenAiChatModelTests {
             System.out.println(generation.getOutput().getText());
         }
     }
+
+    @Test
+    public void testChatModelImage() {
+        Resource resource = new FileSystemResource("/Users/hannahcho/Desktop/etc/Images/Milk.png");
+
+        var media = Media.builder()
+                .mimeType(MimeTypeUtils.IMAGE_PNG)
+                .data(resource)
+                .build();
+
+        Message message = UserMessage.builder()
+                .text("사진에 제목을 붙인다면 무엇이 좋을까?")
+                .media(media)
+                .build();
+
+        String response = chatModel.call(message);
+        System.out.println("result = " + response);
+    }
 }
+
