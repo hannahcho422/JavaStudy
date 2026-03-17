@@ -1,5 +1,5 @@
 class TypeCast {
-    static void main(String[] args) {
+    public static void main(String[] args) {
         Vehicle v = new Car();
         System.out.println(v.name);
         v.whoami();
