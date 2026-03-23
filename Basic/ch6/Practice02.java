@@ -9,7 +9,7 @@ public class Practice02 {
 
         rect.print();
         System.out.println("(" + rect.getX() + ", " + rect.getY() + ") 위치에 가로: " 
-                + rect.getWidth() + ", 세로: " + rect.getHeight() + " (draw())");
+                + rect.getWidth() + ", 세로: " + rect.getHeight());
 
         rect.setX(8);
         rect.setY(9);
