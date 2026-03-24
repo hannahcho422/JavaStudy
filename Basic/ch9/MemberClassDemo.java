@@ -1,3 +1,4 @@
+/* 인스턴스 멤버 클래스 사용 */
 // 외부 클래스
 public class MemberClassDemo {
     private String secret = "비공개";
